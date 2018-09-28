@@ -43,6 +43,10 @@ public class Paciente {
         this.ativo = ativo;
         this.codigoempresa = codigoempresa;
     }
+
+    public Paciente() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
     public Integer getId() {

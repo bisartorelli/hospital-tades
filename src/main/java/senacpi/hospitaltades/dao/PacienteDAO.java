@@ -8,8 +8,11 @@ package senacpi.hospitaltades.dao;
 import senacpi.hospitaltades.utils.ConexaoBanco;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import senacpi.hospitaltades.model.Paciente;
 
 /**
@@ -26,34 +29,45 @@ public class PacienteDAO {
         this.conn = ConexaoBanco.createConnection();
     }
 
-    public void inserirCliente(Paciente paciente) {
+    public List<Paciente> listarPacientes() throws Exception {
+        System.out.println("Listagem de pacientes...");
+        List<Paciente> lista = new ArrayList<>();
+        String query = "";
 
-        String query = "INSERT INTO paciente(nome, dataNasc, rg, cpf, sexo, contato, email,"
-                + "cep, endereco, bairro, cidade, estado, ativo, codigoEmpresa) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        boolean vazio = true;
+
+        query = "SELECT * FROM clientes";
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
-            preparedStatement.setString(1, paciente.getNome());
-            preparedStatement.setString(2, paciente.getDataNasc());
-            preparedStatement.setString(3, paciente.getRg());
-            preparedStatement.setString(4, paciente.getCpf());
-            preparedStatement.setString(5, paciente.getSexo());
-            preparedStatement.setString(6, paciente.getContato());
-            preparedStatement.setString(7, paciente.getEmail());
-            preparedStatement.setString(8, paciente.getCep());
-            preparedStatement.setString(9, paciente.getEndereco());
-            preparedStatement.setString(10, paciente.getBairro());
-            preparedStatement.setString(11, paciente.getCidade());
-            preparedStatement.setString(12, paciente.getEstado());
-            preparedStatement.setBoolean(13, true);
-            preparedStatement.setInt(14, paciente.getCodigoempresa());
-            System.out.println("Inserido");
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            System.out.println("Erro ao salvar cliente" + e);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Paciente paciente = new Paciente();
+
+                paciente.setId(rs.getInt("id"));
+                paciente.setNome(rs.getString("nome"));
+                paciente.setDataNasc(rs.getString("dataNasc"));
+                paciente.setRg(rs.getString("rg"));
+                paciente.setCpf(rs.getString("cpf"));
+                paciente.setSexo(rs.getString("sexo"));
+                paciente.setContato(rs.getString("contato"));
+                paciente.setEmail(rs.getString("email"));
+                paciente.setCep(rs.getString("cep"));
+                paciente.setEndereco(rs.getString("endereco"));
+                paciente.setBairro(rs.getString("bairro"));
+                paciente.setCidade(rs.getString("cidade"));
+                paciente.setEstado(rs.getString("estado"));
+                paciente.setAtivo(true);
+                paciente.setCodigoempresa(rs.getInt("codigoempresa"));
+                lista.add(paciente);
+            }
+
+        } catch (SQLException ex) {
+            throw new Exception("Erro ao listar cliente", ex);
         }
+
+        return lista;
+
     }
 }
