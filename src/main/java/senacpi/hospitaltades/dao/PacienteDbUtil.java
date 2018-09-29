@@ -61,6 +61,8 @@ public class PacienteDbUtil {
                 int codigoEmpresa = myRs.getInt("codigoempresa");
                 
                 Paciente paciente = new Paciente(id, nome, dataNasc, rg, cpf, sexo, contato, email, cep, endereco, bairro, cidade, estado, ativo, codigoEmpresa);
+                
+                pacientes.add(paciente);
             }
 
             return pacientes;

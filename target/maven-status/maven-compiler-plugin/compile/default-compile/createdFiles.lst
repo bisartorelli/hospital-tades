@@ -1,0 +1,6 @@
+senacpi\hospitaltades\dao\PacienteDAO.class
+senacpi\hospitaltades\model\Paciente.class
+senacpi\hospitaltades\utils\ConexaoBanco.class
+senacpi\hospitaltades\dao\PacienteDbUtil.class
+senacpi\hospitaltades\services\PacienteServices.class
+senacpi\hospitaltades\dao\PacienteControllerServlet.class
